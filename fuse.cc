@@ -105,27 +105,42 @@ fuseserver_setattr(fuse_req_t req, fuse_ino_t ino, struct stat *attr, int to_set
   if (FUSE_SET_ATTR_SIZE & to_set) {
     printf("   fuseserver_setattr set size to %llu\n", attr->st_size);
     struct stat st;
-    // You fill this in
-#if 0
-    fuse_reply_attr(req, &st, 0);
-#else
-    fuse_reply_err(req, ENOSYS);
-#endif
+    if (yfs->isfile(ino)) {  //Only a File
+      std::string fileContent; 
+      yfs->get_fileDir_content(ino, fileContent); //Get the Content
+      size_t sizeDiff =  fileContent.size() - attr->st_size;
+      if(sizeDiff > 0) {
+        fileContent = fileContent.substr(0, attr->st_size);
+      } else { //
+        fileContent.append(-sizeDiff,'\0'); //Padding Bytes
+      } 
+
+      yfs->put(ino, fileContent); //Push the Contents
+      getattr(ino, st); //Get the Attributes;Return it.
+      fuse_reply_attr(req, &st, 0);
+    }  
+    else
+      fuse_reply_err(req, ENOSYS);
   } else {
     fuse_reply_err(req, ENOSYS);
-  }
-}
+  } 
+}     
 
 void
 fuseserver_read(fuse_req_t req, fuse_ino_t ino, size_t size,
       off_t off, struct fuse_file_info *fi)
 {
-  // You fill this in
-#if 0
-  fuse_reply_buf(req, buf, size);
-#else
+
+ yfs_client::inum fin = ino;
+ 
+ if(yfs->isfile(fin)) {
+  std::string fileContent, contentToRet;
+  yfs->get_fileDir_content(fin, fileContent);
+  contentToRet = fileContent.substr(off, size); 
+  fuse_reply_buf(req, contentToRet.c_str(), contentToRet.size());
+ }
+ else
   fuse_reply_err(req, ENOSYS);
-#endif
 }
 
 void
@@ -133,12 +148,39 @@ fuseserver_write(fuse_req_t req, fuse_ino_t ino,
   const char *buf, size_t size, off_t off,
   struct fuse_file_info *fi)
 {
-  // You fill this in
-#if 0
-  fuse_reply_write(req, bytes_written);
-#else
+
+  yfs_client::inum fin = ino;
+  if(yfs->isfile(fin)) {
+  
+   std::string fileContent, contentToWrite = buf, toWrite;
+   yfs->get_fileDir_content(fin, fileContent);
+    
+   //Preprocess the buf
+   size_t diff = contentToWrite.size() - size;
+   if(diff < 0) //Need to Append More
+   {
+     toWrite = contentToWrite.append(-diff, '\0');
+   } else {
+     toWrite = contentToWrite.substr(0, size);
+   } 
+   
+   //Put it at the offset
+   if(fileContent.size() < off) {   //Offset is greater
+     fileContent.append(off-fileContent.size(), '\0'); //Append Zeros  
+     fileContent.append(toWrite);
+   } else if ( fileContent.size() < off + size ) {
+     fileContent = fileContent.substr(0, off);
+     fileContent.append(toWrite); 
+   } else {
+     fileContent.replace(off, size, toWrite);
+   }
+
+   yfs->put(ino, fileContent);
+
+   fuse_reply_write(req, size);
+ } 
+ else
   fuse_reply_err(req, ENOSYS);
-#endif
 }
 
 yfs_client::status
