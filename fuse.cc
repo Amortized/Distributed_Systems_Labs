@@ -31,7 +31,7 @@ int id() {
 yfs_client::inum get_new_inum(bool is_file)
 {
   yfs_client::inum new_inum;
-  //srand(time(NULL));
+  srand(id());
   new_inum = rand();
 
   if (is_file)
