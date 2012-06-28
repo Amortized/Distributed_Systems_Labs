@@ -16,12 +16,12 @@ get file or dir content  0000000000000001
 unique: 3, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 1882
 get file or dir content  0000000000000001
    unique: 3, error: -2 (No such file or directory), outsize: 16
-unique: 4, opcode: LOOKUP (1), nodeid: 1, insize: 57, pid: 3967
+unique: 4, opcode: LOOKUP (1), nodeid: 1, insize: 57, pid: 7139
 get file or dir content  0000000000000001
    unique: 4, error: -2 (No such file or directory), outsize: 16
 unique: 5, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1849
    unique: 5, success, outsize: 32
-unique: 6, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 3973
+unique: 6, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 7145
 get file or dir content  0000000000000001
    unique: 6, error: -2 (No such file or directory), outsize: 16
 unique: 7, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1849
@@ -166,70 +166,101 @@ get file or dir content  0000000000000001
    unique: 58, success, outsize: 16
 unique: 59, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 59, success, outsize: 16
-unique: 60, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 3967
+unique: 60, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 7139
    unique: 60, success, outsize: 32
-unique: 61, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 3973
+unique: 61, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 7145
 fuseserver_readdir
 get file or dir content  0000000000000001
    unique: 61, success, outsize: 16
 unique: 62, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 62, success, outsize: 16
-unique: 63, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 3967
+unique: 63, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 7139
 get file or dir content  0000000000000001
    unique: 63, error: -2 (No such file or directory), outsize: 16
-unique: 64, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 4028
-   unique: 64, success, outsize: 32
-unique: 65, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 4028
+unique: 64, opcode: GETATTR (3), nodeid: 1, insize: 56, pid: 5138
+getattr 0000000000000001 0
+getdir 0000000000000001
+   unique: 64, error: -2 (No such file or directory), outsize: 16
+unique: 65, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 7157
+get file or dir content  0000000000000001
+getattr 000000009de47721 1
+getfile 000000009de47721
+getfile 000000009de47721 -> sz 15199
+   getattr -> 15199
+   unique: 65, success, outsize: 144
+unique: 66, opcode: OPEN (14), nodeid: 2648995617, insize: 48, pid: 7157
+   unique: 66, success, outsize: 32
+unique: 67, opcode: IOCTL (39), nodeid: 2648995617, insize: 72, pid: 7157
+   unique: 67, error: -38 (Function not implemented), outsize: 16
+unique: 68, opcode: GETATTR (3), nodeid: 2648995617, insize: 56, pid: 7157
+getattr 000000009de47721 1
+getfile 000000009de47721
+getfile 000000009de47721 -> sz 15199
+   getattr -> 15199
+   unique: 68, success, outsize: 120
+unique: 69, opcode: READ (15), nodeid: 2648995617, insize: 80, pid: 7157
+get file or dir content  000000009de47721
+   unique: 69, success, outsize: 15215
+unique: 70, opcode: GETATTR (3), nodeid: 2648995617, insize: 56, pid: 7157
+getattr 000000009de47721 1
+getfile 000000009de47721
+getfile 000000009de47721 -> sz 15199
+   getattr -> 15199
+   unique: 70, success, outsize: 120
+unique: 71, opcode: GETATTR (3), nodeid: 2648995617, insize: 56, pid: 7157
+getattr 000000009de47721 1
+getfile 000000009de47721
+getfile 000000009de47721 -> sz 15199
+   getattr -> 15199
+   unique: 71, success, outsize: 120
+unique: 72, opcode: FLUSH (25), nodeid: 2648995617, insize: 64, pid: 7157
+   unique: 72, error: -38 (Function not implemented), outsize: 16
+unique: 73, opcode: RELEASE (18), nodeid: 2648995617, insize: 64, pid: 0
+   unique: 73, success, outsize: 16
+unique: 74, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 7157
+get file or dir content  0000000000000001
+getattr 000000009eb40b91 1
+getfile 000000009eb40b91
+getfile 000000009eb40b91 -> sz 4111
+   getattr -> 4111
+   unique: 74, success, outsize: 144
+unique: 75, opcode: OPEN (14), nodeid: 2662599569, insize: 48, pid: 7157
+   unique: 75, success, outsize: 32
+unique: 76, opcode: IOCTL (39), nodeid: 2662599569, insize: 72, pid: 7157
+   unique: 76, error: -38 (Function not implemented), outsize: 16
+unique: 77, opcode: GETATTR (3), nodeid: 2662599569, insize: 56, pid: 7157
+getattr 000000009eb40b91 1
+getfile 000000009eb40b91
+getfile 000000009eb40b91 -> sz 4111
+   getattr -> 4111
+   unique: 77, success, outsize: 120
+unique: 78, opcode: READ (15), nodeid: 2662599569, insize: 80, pid: 7157
+get file or dir content  000000009eb40b91
+   unique: 78, success, outsize: 4127
+unique: 79, opcode: GETATTR (3), nodeid: 2662599569, insize: 56, pid: 7157
+getattr 000000009eb40b91 1
+getfile 000000009eb40b91
+getfile 000000009eb40b91 -> sz 4111
+   getattr -> 4111
+   unique: 79, success, outsize: 120
+unique: 80, opcode: GETATTR (3), nodeid: 2662599569, insize: 56, pid: 7157
+getattr 000000009eb40b91 1
+getfile 000000009eb40b91
+getfile 000000009eb40b91 -> sz 4111
+   getattr -> 4111
+   unique: 80, success, outsize: 120
+unique: 81, opcode: RELEASE (18), nodeid: 2662599569, insize: 64, pid: 0
+   unique: 81, success, outsize: 16
+unique: 82, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 7157
+   unique: 82, success, outsize: 32
+unique: 83, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 7157
 fuseserver_readdir
 get file or dir content  0000000000000001
-   unique: 65, success, outsize: 16
-unique: 66, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
-   unique: 66, success, outsize: 16
-unique: 67, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
+   unique: 83, success, outsize: 80
+unique: 84, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 7157
+fuseserver_readdir
 get file or dir content  0000000000000001
-   unique: 67, error: -2 (No such file or directory), outsize: 16
-unique: 68, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 68, error: -2 (No such file or directory), outsize: 16
-unique: 69, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 69, error: -2 (No such file or directory), outsize: 16
-unique: 70, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 70, error: -2 (No such file or directory), outsize: 16
-unique: 71, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 71, error: -2 (No such file or directory), outsize: 16
-unique: 72, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 72, error: -2 (No such file or directory), outsize: 16
-unique: 73, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 73, error: -2 (No such file or directory), outsize: 16
-unique: 74, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 74, error: -2 (No such file or directory), outsize: 16
-unique: 75, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 75, error: -2 (No such file or directory), outsize: 16
-unique: 76, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 76, error: -2 (No such file or directory), outsize: 16
-unique: 77, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 77, error: -2 (No such file or directory), outsize: 16
-unique: 78, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 78, error: -2 (No such file or directory), outsize: 16
-unique: 79, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 79, error: -2 (No such file or directory), outsize: 16
-unique: 80, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 80, error: -2 (No such file or directory), outsize: 16
-unique: 81, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 81, error: -2 (No such file or directory), outsize: 16
-unique: 82, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 4028
-get file or dir content  0000000000000001
-   unique: 82, error: -2 (No such file or directory), outsize: 16
+   unique: 84, success, outsize: 16
+unique: 85, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
+   unique: 85, success, outsize: 16
+unique: 86, opcode: BATCH_FORGET (42), nodeid: 0, insize: 80, pid: 0
