@@ -92,5 +92,29 @@ yfs_client::getdir(inum inum, dirinfo &din)
   return r;
 }
 
+int 
+yfs_client::put(inum inum, std::string content)
+{
+  int r = OK;
 
+  printf("put %016llx\n", inum);
+  extent_protocol::attr a;
 
+  if (ec->put(inum, content) != extent_protocol::OK) {
+    r = IOERR;
+  } 
+  return r;  
+}
+
+int 
+yfs_client::get_fileDir_content(inum inum, std::string& fd) 
+{
+  int r = OK;
+  printf("get file or dir content  %016llx\n", inum);
+
+  extent_protocol::attr a;
+  if(ec->get(inum, fd) != extent_protocol::OK) {
+    r = IOERR;
+  }
+  return r;
+}
