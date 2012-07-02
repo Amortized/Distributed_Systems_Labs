@@ -81,5 +81,5 @@ int extent_server::remove(extent_protocol::extentid_t id, int &)
   fileContents_.erase(it);
 
   return extent_protocol::OK;
-}
+}  
 

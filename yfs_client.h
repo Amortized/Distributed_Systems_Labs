@@ -11,6 +11,7 @@
 
 class yfs_client {
   extent_client *ec;
+  lock_client *lc;
  public:
 
   typedef unsigned long long inum;
@@ -50,6 +51,12 @@ class yfs_client {
   int put(inum, std::string); 
   int get_fileDir_content(inum, std::string&);
   //Lab2 
+
+  //Lab 4
+  int remove(inum);
+  int acquire(inum);
+  int release(inum);
+  //Lab 4
   
 };
 

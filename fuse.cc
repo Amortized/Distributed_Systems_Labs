@@ -31,7 +31,7 @@ int id() {
 yfs_client::inum get_new_inum(bool is_file)
 {
   yfs_client::inum new_inum;
-//  srand(id());
+//  srand(time(NULL));
   new_inum = rand();
 
   if (is_file)
@@ -90,9 +90,18 @@ fuseserver_getattr(fuse_req_t req, fuse_ino_t ino,
     yfs_client::inum inum = ino; // req->in.h.nodeid;
     yfs_client::status ret;
 
+    //Lab 4
+    yfs->acquire(inum);
+
     ret = getattr(inum, st);
+
+    yfs->release(inum);
+
+    //Lab 4
+
     if(ret != yfs_client::OK){
       fuse_reply_err(req, ENOENT);
+
       return;
     }
     fuse_reply_attr(req, &st, 0);
@@ -105,9 +114,15 @@ fuseserver_setattr(fuse_req_t req, fuse_ino_t ino, struct stat *attr, int to_set
   if (FUSE_SET_ATTR_SIZE & to_set) {
     printf("   fuseserver_setattr set size to %llu\n", attr->st_size);
     struct stat st;
-    if (yfs->isfile(ino)) {  //Only a File
+    yfs_client::inum inum = ino;
+    if (yfs->isfile(inum)) {  //Only a File
       std::string fileContent; 
-      yfs->get_fileDir_content(ino, fileContent); //Get the Content
+
+
+      yfs->acquire(inum);//Lab 4 
+      
+
+      yfs->get_fileDir_content(inum, fileContent); //Get the Content
       size_t sizeDiff =  fileContent.size() - attr->st_size;
       if(sizeDiff > 0) {
         fileContent = fileContent.substr(0, attr->st_size);
@@ -115,8 +130,11 @@ fuseserver_setattr(fuse_req_t req, fuse_ino_t ino, struct stat *attr, int to_set
         fileContent.append(-sizeDiff,'\0'); //Padding Bytes
       } 
 
-      yfs->put(ino, fileContent); //Push the Contents
-      getattr(ino, st); //Get the Attributes;Return it.
+      yfs->put(inum, fileContent); //Push the Contents
+      getattr(inum, st); //Get the Attributes;Return it.
+
+      yfs->release(inum); //Lab 4
+ 
       fuse_reply_attr(req, &st, 0);
     }  
     else
@@ -135,8 +153,14 @@ fuseserver_read(fuse_req_t req, fuse_ino_t ino, size_t size,
  
  if(yfs->isfile(fin)) {
   std::string fileContent, contentToRet;
+
+  yfs->acquire(fin);  //Lab 4
+
   yfs->get_fileDir_content(fin, fileContent);
-  contentToRet = fileContent.substr(off, size); 
+  yfs->release(fin); //Lab 4
+
+  contentToRet = fileContent.substr(off, size);
+
   fuse_reply_buf(req, contentToRet.c_str(), contentToRet.size());
  }
  else
@@ -152,23 +176,32 @@ fuseserver_write(fuse_req_t req, fuse_ino_t ino,
   yfs_client::inum fin = ino;
   if(yfs->isfile(fin)) {
   
+   yfs->acquire(fin); //Lab 4
+
    std::string fileContent, contentToWrite = buf, toWrite;
+
    yfs->get_fileDir_content(fin, fileContent);
     
    //Preprocess the buf
-   size_t diff = contentToWrite.size() - size;
+ /*  size_t diff = contentToWrite.size() - size;
    if(diff < 0) //Need to Append More
    {
      toWrite = contentToWrite.append(-diff, '\0');
    } else {
      toWrite = contentToWrite.substr(0, size);
+   }  */
+  
+   if(contentToWrite.size() >= size) {
+      toWrite = contentToWrite.substr(0, size);
+   } else {
+      toWrite = contentToWrite.append(size - contentToWrite.size(), '\0');
    } 
-   
+  
    //Put it at the offset
    if(fileContent.size() < off) {   //Offset is greater
      fileContent.append(off-fileContent.size(), '\0'); //Append Zeros  
      fileContent.append(toWrite);
-   } else if ( fileContent.size() < off + size ) {
+   } else if ( fileContent.size() <= off + size ) {
      fileContent = fileContent.substr(0, off);
      fileContent.append(toWrite); 
    } else {
@@ -176,6 +209,8 @@ fuseserver_write(fuse_req_t req, fuse_ino_t ino,
    }
 
    yfs->put(ino, fileContent);
+
+   yfs->release(fin); //Lab 4
 
    fuse_reply_write(req, size);
  } 
@@ -188,8 +223,10 @@ fuseserver_createhelper(fuse_ino_t parent, const char *name,
      mode_t mode, struct fuse_entry_param *e)
 {
   // You fill this in
-
+ 
   if(yfs->isdir(parent)) {
+
+     yfs->acquire(parent);  //lab4
         
      //Check if File Already Exists
      std::string dirCon;
@@ -199,12 +236,15 @@ fuseserver_createhelper(fuse_ino_t parent, const char *name,
      if(pos != std::string::npos) 
      {	
 	std::cout << "File or Dir Already Exists" << std::endl;
+	yfs->release(parent);
 	return yfs_client::EXIST;
      }	
      
      //Get a File No
      yfs_client::inum fileNum = get_new_inum(true);		
      
+     yfs->acquire(fileNum); //Lab 4
+
      dirCon.append(name);  
      dirCon.append("=");
      dirCon.append(yfs->filename(fileNum));
@@ -218,19 +258,26 @@ fuseserver_createhelper(fuse_ino_t parent, const char *name,
      e->ino = fileNum;	
      getattr(e->ino, e->attr);  
 	
-     return yfs_client::OK;	
-  }
 
+     //lab 4
+     yfs->release(fileNum);
+     yfs->release(parent);
+     //Lab 4
+     return yfs_client::OK;	
+  }   
   return yfs_client::NOENT;
-}
+}  
 
 void
 fuseserver_create(fuse_req_t req, fuse_ino_t parent, const char *name,
    mode_t mode, struct fuse_file_info *fi)
 {
   struct fuse_entry_param e;
-  if( fuseserver_createhelper( parent, name, mode, &e ) == yfs_client::OK ) {
+  yfs_client::status status = fuseserver_createhelper(parent, name, mode, &e);
+  if( status == yfs_client::OK ) {
     fuse_reply_create(req, &e, fi);
+  } else if (status == yfs_client::EXIST) {
+    fuse_reply_err(req, EEXIST);
   } else {
     fuse_reply_err(req, ENOENT);
   }
@@ -238,9 +285,14 @@ fuseserver_create(fuse_req_t req, fuse_ino_t parent, const char *name,
 
 void fuseserver_mknod( fuse_req_t req, fuse_ino_t parent, 
     const char *name, mode_t mode, dev_t rdev ) {
+
   struct fuse_entry_param e;
-  if( fuseserver_createhelper( parent, name, mode, &e ) == yfs_client::OK ) {
+  yfs_client::status status = fuseserver_createhelper(parent, name, mode, &e);
+
+  if( status == yfs_client::OK ) {
     fuse_reply_entry(req, &e);
+  } else if (status == yfs_client::EXIST) {
+    fuse_reply_err(req, EEXIST);
   } else {
     fuse_reply_err(req, ENOENT);
   }
@@ -262,7 +314,11 @@ fuseserver_lookup(fuse_req_t req, fuse_ino_t parent, const char *name)
 
   //Get the content of dir
   std::string dirCon, nameToSearch = name; 
-  
+
+  yfs_client::inum iNo; 
+
+  yfs->acquire(parent); //Lab4
+ 
   yfs->get_fileDir_content(parent, dirCon);				
   size_t pos = dirCon.find(nameToSearch + "="); 
   
@@ -277,11 +333,20 @@ fuseserver_lookup(fuse_req_t req, fuse_ino_t parent, const char *name)
     std::string inum_str = temp.substr(start+1, end-1);	    
 
     e.ino = yfs->n2i(inum_str);
+    iNo = e.ino;
+
+     
+    yfs->acquire(iNo); //Lab 4
 
     if(getattr(e.ino, e.attr) != yfs_client::OK) {
       found = false;    
     } 
-  } 
+   
+
+  yfs->release(iNo);  //Lab4 
+  }
+
+  yfs->release(parent); //Lab4  
 
   if (found)
     fuse_reply_entry(req, &e);
@@ -336,6 +401,8 @@ fuseserver_readdir(fuse_req_t req, fuse_ino_t ino, size_t size,
   
   std::string dirCon;
 
+  yfs->acquire(inum); //Lab 4 
+
   yfs->get_fileDir_content(inum, dirCon);
 
   std::vector<std::string> list;
@@ -355,6 +422,7 @@ fuseserver_readdir(fuse_req_t req, fuse_ino_t ino, size_t size,
     dirbuf_add(&b, file_name.c_str(), file_inum); 
   }    
 
+  yfs->release(inum); //Lab 4
 
   reply_buf_limited(req, b.p, b.size, off, size);
   free(b.p);
@@ -383,22 +451,91 @@ fuseserver_mkdir(fuse_req_t req, fuse_ino_t parent, const char *name,
 {
   struct fuse_entry_param e;
 
-  // You fill this in
-#if 0
-  fuse_reply_entry(req, &e);
-#else
+  if (yfs->isdir(parent)) {
+
+   yfs->acquire(parent); //Lab 4 
+
+   std::string dirName = name;
+   std::string dirContent;
+   yfs->get_fileDir_content(parent, dirContent);
+   yfs_client::inum newNo = get_new_inum(false);//Get a DirNo
+
+   yfs->acquire(newNo); //Lab 4
+
+   dirContent.append(name);
+   dirContent.append("=");
+   dirContent.append(yfs->filename(newNo));
+   dirContent.append(";");
+
+   yfs->put(newNo , ""); //Put the File
+   yfs->put(parent, dirContent); //Put the Directory
+
+   e.attr_timeout = 0.0;
+   e.entry_timeout = 0.0;
+   e.ino = newNo;
+   getattr(e.ino, e.attr);
+
+
+   yfs->release(newNo);  //Lab4
+   yfs->release(parent); //Lab4
+
+   fuse_reply_entry(req, &e);
+  }     
   fuse_reply_err(req, ENOSYS);
-#endif
-}
+}  
 
 void
 fuseserver_unlink(fuse_req_t req, fuse_ino_t parent, const char *name)
 {
+  bool found = false;
 
-  // You fill this in
-  // Success:	fuse_reply_err(req, 0);
-  // Not found:	fuse_reply_err(req, ENOENT);
-  fuse_reply_err(req, ENOSYS);
+    if (yfs->isdir(parent))
+  {
+
+
+  //Get the content of dir
+  std::string dirCon, nameToSearch = name;
+
+  yfs->acquire(parent); //Lab 4
+
+  yfs->get_fileDir_content(parent, dirCon);
+  size_t pos = dirCon.find(nameToSearch + "=");
+
+  if(pos == std::string::npos)
+  {
+    found = false;
+  }  
+  else {
+    found = true;
+    std::string temp = dirCon.substr(pos);
+    size_t start = temp.find_first_of("=");
+    size_t end   = temp.find_first_of(";");
+    std::string inum_str = temp.substr(start+1, end-1);
+    dirCon.erase(pos,end+1);    
+
+   
+    yfs_client::inum iNo= yfs->n2i(inum_str);   
+   
+ 
+    yfs->put(parent, dirCon);
+
+    yfs->acquire(iNo); //Lab4
+
+    yfs->remove(iNo);
+
+    yfs->release(iNo); //Lab4
+           
+  } 
+  
+  yfs->release(parent); //Lab 4
+ }
+
+  if (found)
+    fuse_reply_err(req, 0);
+  else
+    fuse_reply_err(req, ENOENT);
+
+  //fuse_reply_err(req, ENOSYS);
 }
 
 void

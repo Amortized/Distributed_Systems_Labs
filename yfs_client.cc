@@ -14,7 +14,7 @@
 yfs_client::yfs_client(std::string extent_dst, std::string lock_dst)
 {
   ec = new extent_client(extent_dst);
-
+  lc = new lock_client(lock_dst);
 }
 
 yfs_client::inum
@@ -118,3 +118,49 @@ yfs_client::get_fileDir_content(inum inum, std::string& fd)
   }
   return r;
 }
+
+//Lab 4
+
+int
+yfs_client::remove(inum inum) 
+{
+  int r = OK;
+  printf("remove  %016llx\n", inum);
+  if(ec->remove(inum) != extent_protocol::OK) {
+    r = IOERR;
+  } 
+  return r;
+}
+
+
+
+int
+yfs_client::acquire(inum inum)
+{
+  int r = OK;
+  printf("acquire  %016llx\n", inum);
+  lock_protocol::lockid_t lid = inum;
+  if(lc->acquire(lid) != lock_protocol::OK) {
+    r = IOERR;
+  }
+  return r;
+}
+
+int
+yfs_client::release(inum inum)
+{
+  int r = OK;
+  printf("Remove  %016llx\n", inum);
+  lock_protocol::lockid_t lid = inum;
+  if(lc->release(lid) != lock_protocol::OK) {
+    r = IOERR;
+  }
+  return r;
+}
+
+
+
+
+
+
+//Lab 4

@@ -69,6 +69,7 @@ check1(const char *d, const char *f, const char *in)
   }
   errno = 0;
   cc = read(fd, buf, sizeof(buf) - 1);
+
   if(cc != strlen(in)){
     fprintf(stderr, "test-lab-4-b: read(%s) returned too little %d%s%s\n",
             n,
@@ -175,7 +176,7 @@ createn(const char *d, const char *prefix, int nf, bool possible_dup)
               n, strerror(errno));
       exit(1);
     }
-  }
+  }  
 }
 
 void
@@ -191,9 +192,10 @@ checkn(const char *d, const char *prefix, int nf)
       fprintf(stderr, "test-lab-4-b: open(%s): %s\n",
               n, strerror(errno));
       exit(1);
-    }
+    } 
     j = -1;
     cc = read(fd, &j, sizeof(j));
+
     if(cc != sizeof(j)){
       fprintf(stderr, "test-lab-4-b: read(%s) returned too little %d%s%s\n",
               n,
@@ -208,7 +210,7 @@ checkn(const char *d, const char *prefix, int nf)
       exit(1);
     }
     close(fd);
-  }
+  } 
 }
 
 void
@@ -428,7 +430,7 @@ main(int argc, char *argv[])
   if(pid == 0){
     createn(d2, "zz", 20, true);
     exit(0);
-  }
+  } 
   createn(d1, "zz", 20, true);
   sleep(4);
   dircheck(d1, 20);
