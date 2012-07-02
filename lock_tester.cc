@@ -51,7 +51,7 @@ check_release(lock_protocol::lockid_t lid)
   }
   ct[x] -= 1;
   pthread_mutex_unlock(&count_mutex);
-}
+}		
 
 void
 test1(void)
@@ -74,13 +74,13 @@ test1(void)
     lc[0]->release(b);
     check_release(b);
     lc[0]->release(a);
-    check_release(a);
+    check_release(a); 
 }
 
 void *
 test2(void *x) 
 {
-  int i = * (int *) x;
+ int i = * (int *) x;
 
   printf ("test2: client %d acquire a release a\n", i);
   lc[i]->acquire(a);
@@ -90,14 +90,14 @@ test2(void *x)
   printf ("test2: client %d release\n", i);
   check_release(a);
   lc[i]->release(a);
-  printf ("test2: client %d release done\n", i);
+  printf ("test2: client %d release done\n", i); 
   return 0;
 }
 
 void *
 test3(void *x)
 {
-  int i = * (int *) x;
+ int i = * (int *) x;
 
   printf ("test3: client %d acquire a release a concurrent\n", i);
   for (int j = 0; j < 10; j++) {
@@ -106,7 +106,7 @@ test3(void *x)
     printf ("test3: client %d got lock\n", i);
     check_release(a);
     lc[i]->release(a);
-  }
+  } 
   return 0;
 }
 
@@ -122,7 +122,7 @@ test4(void *x)
     printf ("test4: thread %d on client 0 got lock\n", i);
     check_release(a);
     lc[0]->release(a);
-  }
+  } 
   return 0;
 }
 
@@ -140,7 +140,7 @@ test5(void *x)
     check_release(a);
     if (i < 5) lc[0]->release(a);
     else lc[1]->release(a);
-  }
+  } 
   return 0;
 }
 
