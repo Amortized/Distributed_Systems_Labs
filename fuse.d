@@ -120,8 +120,8 @@ fuse.o: fuse.cc /usr/local/include/fuse/fuse_lowlevel.h \
  /usr/include/c++/4.6/bits/istream.tcc /usr/include/c++/4.6/sstream \
  /usr/include/c++/4.6/bits/sstream.tcc rpc/connection.h rpc/pollmgr.h \
  /usr/include/i386-linux-gnu/sys/epoll.h lock_protocol.h lock_client.h \
- /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
- /usr/include/c++/4.6/bits/stl_relops.h \
+ lock_client_cache.h /usr/include/c++/4.6/algorithm \
+ /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \
  /usr/include/c++/4.6/bits/algorithmfwd.h \
  /usr/include/c++/4.6/bits/stl_heap.h \

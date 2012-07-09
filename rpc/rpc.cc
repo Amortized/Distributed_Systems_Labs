@@ -944,7 +944,7 @@ make_sockaddr(const char *hostandport, struct sockaddr_in *dst){
 	if(port == NULL){
 		memcpy(host, localhost, strlen(localhost)+1);
 		port = hostandport;
-	}else{
+	}else{ 
 		memcpy(host, hostandport, port-hostandport);
 		host[port-hostandport] = '\0';
 		port++;
@@ -952,7 +952,7 @@ make_sockaddr(const char *hostandport, struct sockaddr_in *dst){
 
 	make_sockaddr(host, port, dst);
 
-}
+}       
 
 void
 make_sockaddr(const char *host, const char *port, struct sockaddr_in *dst){

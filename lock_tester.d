@@ -108,4 +108,4 @@ lock_tester.o: lock_tester.cc lock_protocol.h rpc/rpc.h \
  rpc/pollmgr.h /usr/include/i386-linux-gnu/sys/epoll.h lock_client.h \
  rpc/jsl_log.h /usr/include/libio.h /usr/include/_G_config.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h lock_client_cache.h

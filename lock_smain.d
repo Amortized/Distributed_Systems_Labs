@@ -108,5 +108,7 @@ lock_smain.o: lock_smain.cc rpc/rpc.h \
  rpc/pollmgr.h /usr/include/i386-linux-gnu/sys/epoll.h \
  /usr/include/libio.h /usr/include/_G_config.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h lock_server.h \
- lock_protocol.h lock_client.h rpc/jsl_log.h
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h lock_server_cache.h \
+ lock_protocol.h lock_server.h lock_client.h /usr/include/c++/4.6/set \
+ /usr/include/c++/4.6/bits/stl_set.h \
+ /usr/include/c++/4.6/bits/stl_multiset.h rpc/jsl_log.h

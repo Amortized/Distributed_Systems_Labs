@@ -72,18 +72,38 @@ class lock_release_user {
 
 class lock_client_cache : public lock_client {
  private:
+  enum lock_status {NONE, FREE, LOCKED, ACQUIRING, RELEASING};
+  struct lockids {
+    lock_status lstatus;
+    unsigned int seq_num;
+  };
+
   class lock_release_user *lu;
   int rlock_port;
   std::string hostname;
   std::string id;
 
+  Mutex m;
+  ConditionVar cv;      //For Acquire Function
+  ConditionVar rvk_cv;  //For Release thread to send the RPC's
+  ConditionVar rtr_cv;  //For pingLock within Acquire
+  map<lock_protocol::lockid_t, lockids*> lockMap; //Status of each lock.Seq No indicates locks currently under consideration. Any Seq No less than this should be simply discarded.
+  map<lock_protocol::lockid_t, unsigned int> revokeMap; //Revoke Map.Server is requesting these locks to be released.
+  map<lock_protocol::lockid_t, bool> retryMap; //Retry Map
+
+  lock_protocol::status pingLock(lock_protocol::lockid_t, lockids*);
+  pthread_t th;
+
+
  public:
   static int last_port;
   lock_client_cache(std::string xdst, class lock_release_user *l = 0);
-  virtual ~lock_client_cache() {};
+  virtual ~lock_client_cache();
   lock_protocol::status acquire(lock_protocol::lockid_t);
   virtual lock_protocol::status release(lock_protocol::lockid_t);
   void releaser();
+  virtual lock_protocol::status revoke(lock_protocol::lockid_t lid, unsigned int, int &);
+  virtual lock_protocol::status retry(lock_protocol::lockid_t lid, int &);
 };
 #endif
 
