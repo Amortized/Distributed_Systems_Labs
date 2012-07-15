@@ -1,10 +1,9 @@
 #!/usr/bin/perl -w
 
-sub oops {
-    my($msg) = @_;
+sub oops {        
+    my($msg) = @_; 
     print STDERR "test-lab-4-a.pl error: $msg : $!\n";
-    exit(1);
-}
+    exit(1);                                                                    }                   
 
 sub oops1 {
     my($msg) = @_;
@@ -25,6 +24,8 @@ if(mkdir($dir, 0777) == 0){
     oops("mkdir $dir");
 }
 
+
+
 my $files = { };
 my @dead;
 
@@ -40,8 +41,8 @@ for($iters = 0; $iters < 10; $iters++){
 
 for($iters = 0; $iters < 50; $iters++){
     if(rand() < 0.2){
-        deadcheck();
-    }
+        deadcheck();  
+    }                         
     if(rand() < 0.2){
         livecheck();
     }
@@ -60,7 +61,7 @@ for($iters = 0; $iters < 50; $iters++){
     if(rand() < 0.5){
         deleteone();
     }
-}
+}    
 
 dircheck();
 cleanup();
@@ -72,9 +73,10 @@ sub createone {
     my $name = "x-" . $seq;
     $seq = $seq + 1;
     my $contents = rand();
-    print "create $name\n";
+    print "createe $name\n";
+     	
     if(!open(F, ">$dir/$name")){
-        oops("cannot create $name");
+        oops("cannott create $name");
     }
     print F "$contents";
     close(F);

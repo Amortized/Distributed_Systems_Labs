@@ -9,9 +9,15 @@
 #include "lock_client.h"
 #include "lock_client_cache.h"
 
-class yfs_client {
+class yfs_client : public lock_release_user {
   extent_client *ec;
+  // <lab4>
+//  lock_client *lc;
+
+// </lab4>
+// <lab5>
   lock_client_cache *lc;
+//<lab5>
  public:
 
   typedef unsigned long long inum;
@@ -57,6 +63,9 @@ class yfs_client {
   int acquire(inum);
   int release(inum);
   //Lab 4
+
+
+  void dorelease(lock_protocol::lockid_t) { }
   
 };
 

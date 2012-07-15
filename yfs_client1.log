@@ -10,241 +10,218 @@ max_readahead=0x00020000
    max_background=0
    congestion_threshold=0
    unique: 1, success, outsize: 40
-unique: 2, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 1922
+unique: 2, opcode: LOOKUP (1), nodeid: 1, insize: 47, pid: 1921
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 2, error: -2 (No such file or directory), outsize: 16
-unique: 3, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 1922
+unique: 3, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 1921
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 3, error: -2 (No such file or directory), outsize: 16
-unique: 4, opcode: LOOKUP (1), nodeid: 1, insize: 57, pid: 5401
+unique: 4, opcode: LOOKUP (1), nodeid: 1, insize: 57, pid: 15477
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 4, error: -2 (No such file or directory), outsize: 16
-unique: 5, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 5, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 5, success, outsize: 32
-unique: 6, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 5400
+unique: 6, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 15476
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 6, error: -2 (No such file or directory), outsize: 16
-unique: 7, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 7, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 7, success, outsize: 16
 unique: 8, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 8, success, outsize: 16
-unique: 9, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 9, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 9, success, outsize: 32
-unique: 10, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 10, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 10, success, outsize: 16
 unique: 11, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 11, success, outsize: 16
-unique: 12, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 12, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 12, success, outsize: 32
-unique: 13, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 13, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 13, success, outsize: 16
 unique: 14, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 14, success, outsize: 16
-unique: 15, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 15, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 15, success, outsize: 32
-unique: 16, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 16, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 16, success, outsize: 16
 unique: 17, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 17, success, outsize: 16
-unique: 18, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 18, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 18, success, outsize: 32
-unique: 19, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 19, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 19, success, outsize: 16
 unique: 20, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 20, success, outsize: 16
-unique: 21, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 21, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 21, success, outsize: 32
-unique: 22, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 22, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 22, success, outsize: 16
 unique: 23, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 23, success, outsize: 16
-unique: 24, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 24, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 24, success, outsize: 32
-unique: 25, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 25, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 25, success, outsize: 16
 unique: 26, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 26, success, outsize: 16
-unique: 27, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 27, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 27, success, outsize: 32
-unique: 28, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 28, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 28, success, outsize: 16
 unique: 29, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 29, success, outsize: 16
-unique: 30, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 30, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 30, success, outsize: 32
-unique: 31, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 31, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 31, success, outsize: 16
 unique: 32, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 32, success, outsize: 16
-unique: 33, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 33, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 33, success, outsize: 32
-unique: 34, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 34, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 34, success, outsize: 16
 unique: 35, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 35, success, outsize: 16
-unique: 36, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 36, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 36, success, outsize: 32
-unique: 37, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 37, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 37, success, outsize: 16
 unique: 38, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 38, success, outsize: 16
-unique: 39, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 39, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 39, success, outsize: 32
-unique: 40, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 40, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 40, success, outsize: 16
 unique: 41, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 41, success, outsize: 16
-unique: 42, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 42, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 42, success, outsize: 32
-unique: 43, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 43, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 43, success, outsize: 16
 unique: 44, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 44, success, outsize: 16
-unique: 45, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 45, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 45, success, outsize: 32
-unique: 46, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 46, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 46, success, outsize: 16
 unique: 47, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 47, success, outsize: 16
-unique: 48, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 48, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 48, success, outsize: 32
-unique: 49, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 49, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 49, success, outsize: 16
 unique: 50, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 50, success, outsize: 16
-unique: 51, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 51, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 51, success, outsize: 32
-unique: 52, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 52, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 52, success, outsize: 16
 unique: 53, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 53, success, outsize: 16
-unique: 54, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 54, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 54, success, outsize: 32
-unique: 55, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 55, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 55, success, outsize: 16
 unique: 56, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 56, success, outsize: 16
-unique: 57, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1892
+unique: 57, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 1889
    unique: 57, success, outsize: 32
-unique: 58, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1892
+unique: 58, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 1889
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 58, success, outsize: 16
 unique: 59, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 59, success, outsize: 16
-unique: 60, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 5401
+unique: 60, opcode: OPENDIR (27), nodeid: 1, insize: 48, pid: 15477
    unique: 60, success, outsize: 32
-unique: 61, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 5400
+unique: 61, opcode: READDIR (28), nodeid: 1, insize: 80, pid: 15476
 fuseserver_readdir
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 61, success, outsize: 16
 unique: 62, opcode: RELEASEDIR (29), nodeid: 1, insize: 64, pid: 0
    unique: 62, success, outsize: 16
-unique: 63, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 5401
+unique: 63, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 15477
 acquire  0000000000000001
 get file or dir content  0000000000000001
-Remove  0000000000000001
+Remove1  0000000000000001
    unique: 63, error: -2 (No such file or directory), outsize: 16
-unique: 64, opcode: GETATTR (3), nodeid: 1, insize: 56, pid: 2611
-acquire  0000000000000001
-getattr 0000000000000001 0
-getdir 0000000000000001
-Remove  0000000000000001
-   unique: 64, error: -2 (No such file or directory), outsize: 16
-unique: 65, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 5431
-acquire  0000000000000001
-get file or dir content  0000000000000001
-Remove  0000000000000001
-   unique: 65, error: -2 (No such file or directory), outsize: 16
-unique: 66, opcode: MKDIR (9), nodeid: 1, insize: 54, pid: 5431
-acquire  0000000000000001
-get file or dir content  0000000000000001
-acquire  000000006655a885
-put 000000006655a885
-put 0000000000000001
-getattr 000000006655a885 0
-getdir 000000006655a885
-   getattr -> 1341807052 1341807052 1341807052
-Remove  000000006655a885
-Remove  0000000000000001
-   unique: 66, success, outsize: 144

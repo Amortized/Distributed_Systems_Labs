@@ -35,7 +35,7 @@ check_grant(lock_protocol::lockid_t lid)
     fprintf(stderr, "error: server granted %016llx twice\n", lid);
     fprintf(stdout, "error: server granted %016llx twice\n", lid);
     exit(1);
-  }
+  }                                                                            
   ct[x] += 1;
   pthread_mutex_unlock(&count_mutex);
 }
@@ -237,5 +237,8 @@ main(int argc, char *argv[])
     }
 
     printf ("%s: passed all tests successfully\n", argv[0]);
+
+//    delete lc[0];
+
 
 }

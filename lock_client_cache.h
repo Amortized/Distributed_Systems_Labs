@@ -99,6 +99,9 @@ class lock_client_cache : public lock_client {
   static int last_port;
   lock_client_cache(std::string xdst, class lock_release_user *l = 0);
   virtual ~lock_client_cache();
+
+
+
   lock_protocol::status acquire(lock_protocol::lockid_t);
   virtual lock_protocol::status release(lock_protocol::lockid_t);
   void releaser();

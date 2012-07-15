@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <sstream>
 
+
 int myid;
 yfs_client *yfs;
 
@@ -223,6 +224,7 @@ fuseserver_createhelper(fuse_ino_t parent, const char *name,
      mode_t mode, struct fuse_entry_param *e)
 {
   // You fill this in
+    std::cout << "Hh:" << std::endl;
  
   if(yfs->isdir(parent)) {
 
@@ -434,6 +436,7 @@ fuseserver_open(fuse_req_t req, fuse_ino_t ino,
      struct fuse_file_info *fi)
 {
   yfs_client::inum inum = ino;
+  std::cout << "Hh:" << std::endl;
   if (yfs->isfile(inum))
   {
     fi->fh = fi->flags;
@@ -442,7 +445,7 @@ fuseserver_open(fuse_req_t req, fuse_ino_t ino,
   else
   {
     fuse_reply_err(req, ENOSYS);
-  }
+  }  
 }
 
 void
@@ -454,7 +457,9 @@ fuseserver_mkdir(fuse_req_t req, fuse_ino_t parent, const char *name,
   if (yfs->isdir(parent)) {
 
    yfs->acquire(parent); //Lab 4 
-
+ 
+   std::cout << "Lock Give:\n"; 
+  
    std::string dirName = name;
    std::string dirContent;
    yfs->get_fileDir_content(parent, dirContent);
@@ -467,8 +472,12 @@ fuseserver_mkdir(fuse_req_t req, fuse_ino_t parent, const char *name,
    dirContent.append(yfs->filename(newNo));
    dirContent.append(";");
 
+
+   
    yfs->put(newNo , ""); //Put the File
    yfs->put(parent, dirContent); //Put the Directory
+
+   std::cout << "Dir:" << dirContent << std::endl;
 
    e.attr_timeout = 0.0;
    e.entry_timeout = 0.0;
@@ -477,7 +486,9 @@ fuseserver_mkdir(fuse_req_t req, fuse_ino_t parent, const char *name,
 
 
    yfs->release(newNo);  //Lab4
+   std::cout << "This is Dpme:" << std::endl;
    yfs->release(parent); //Lab4
+   std::cout << "Doing this:" << std::endl;
 
    fuse_reply_entry(req, &e);
   }     
@@ -492,7 +503,7 @@ fuseserver_unlink(fuse_req_t req, fuse_ino_t parent, const char *name)
     if (yfs->isdir(parent))
   {
 
-
+  std::cout << "Hereee:" << std::endl;
   //Get the content of dir
   std::string dirCon, nameToSearch = name;
 
