@@ -462,20 +462,18 @@ fuseserver_mkdir(fuse_req_t req, fuse_ino_t parent, const char *name,
   
    std::string dirName = name;
    std::string dirContent;
-
+   yfs->get_fileDir_content(parent, dirContent);
    yfs_client::inum newNo = get_new_inum(false);//Get a DirNo
 
    yfs->acquire(newNo); //Lab 4
-
-
-   yfs->get_fileDir_content(parent, dirContent);
-
 
    dirContent.append(name);
    dirContent.append("=");
    dirContent.append(yfs->filename(newNo));
    dirContent.append(";");
 
+
+   
    yfs->put(newNo , ""); //Put the File
    yfs->put(parent, dirContent); //Put the Directory
 
@@ -493,7 +491,7 @@ fuseserver_mkdir(fuse_req_t req, fuse_ino_t parent, const char *name,
    std::cout << "Doing this:" << std::endl;
 
    fuse_reply_entry(req, &e);
-  } else      
+  }     
   fuse_reply_err(req, ENOSYS);
 }  
 
