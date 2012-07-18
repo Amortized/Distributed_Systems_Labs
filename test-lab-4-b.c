@@ -69,6 +69,7 @@ check1(const char *d, const char *f, const char *in)
   }
   errno = 0;
   cc = read(fd, buf, sizeof(buf) - 1);
+
   if(cc != strlen(in)){
     fprintf(stderr, "test-lab-4-b: read(%s) returned too little %d%s%s\n",
             n,
@@ -143,7 +144,7 @@ append1(const char *d, const char *f, const char *in)
 }
 
 void
-createn(const char *d, const char *prefix, int nf)
+createn(const char *d, const char *prefix, int nf, bool possible_dup)
 {
   int fd, i;
   char n[512];
@@ -157,6 +158,9 @@ createn(const char *d, const char *prefix, int nf)
   for(i = 0; i < nf; i++){
     sprintf(n, "%s/%s-%d", d, prefix, i);
     fd = creat(n, 0666);
+		if (fd < 0 && possible_dup && errno == EEXIST) {
+			continue;
+		}
     if(fd < 0){
       fprintf(stderr, "test-lab-4-b: create(%s): %s\n",
               n, strerror(errno));
@@ -172,7 +176,7 @@ createn(const char *d, const char *prefix, int nf)
               n, strerror(errno));
       exit(1);
     }
-  }
+  }  
 }
 
 void
@@ -188,9 +192,10 @@ checkn(const char *d, const char *prefix, int nf)
       fprintf(stderr, "test-lab-4-b: open(%s): %s\n",
               n, strerror(errno));
       exit(1);
-    }
+    } 
     j = -1;
     cc = read(fd, &j, sizeof(j));
+
     if(cc != sizeof(j)){
       fprintf(stderr, "test-lab-4-b: read(%s) returned too little %d%s%s\n",
               n,
@@ -205,7 +210,7 @@ checkn(const char *d, const char *prefix, int nf)
       exit(1);
     }
     close(fd);
-  }
+  } 
 }
 
 void
@@ -378,8 +383,8 @@ main(int argc, char *argv[])
   printf("OK\n");
 
   printf("Many sequential creates: ");
-  createn(d1, "aa", 10);
-  createn(d2, "bb", 10);
+  createn(d1, "aa", 10, false);
+  createn(d2, "bb", 10, false);
   dircheck(d2, 20);
   checkn(d2, "bb", 10);
   checkn(d2, "aa", 10);
@@ -403,10 +408,10 @@ main(int argc, char *argv[])
     exit(1);
   }
   if(pid == 0){
-    createn(d2, "xx", 20);
+    createn(d2, "xx", 20, false);
     exit(0);
   }
-  createn(d1, "yy", 20);
+  createn(d1, "yy", 20, false);
   sleep(10);
   reap(pid);
   dircheck(d1, 40);
@@ -423,10 +428,10 @@ main(int argc, char *argv[])
     exit(1);
   }
   if(pid == 0){
-    createn(d2, "zz", 20);
+    createn(d2, "zz", 20, true);
     exit(0);
-  }
-  createn(d1, "zz", 20);
+  } 
+  createn(d1, "zz", 20, true);
   sleep(4);
   dircheck(d1, 20);
   reap(pid);
@@ -436,8 +441,8 @@ main(int argc, char *argv[])
   printf("OK\n");
 
   printf("Concurrent create/delete: ");
-  createn(d1, "x1", 20);
-  createn(d2, "x2", 20);
+  createn(d1, "x1", 20, false);
+  createn(d2, "x2", 20, false);
   pid = fork();
   if(pid < 0){
     perror("test-lab-4-b: fork");
@@ -445,10 +450,10 @@ main(int argc, char *argv[])
   }
   if(pid == 0){
     unlinkn(d2, "x1", 20);
-    createn(d1, "x3", 20);
+    createn(d1, "x3", 20, false);
     exit(0);
   }
-  createn(d1, "x4", 20);
+  createn(d1, "x4", 20, false);
   reap(pid);
   unlinkn(d2, "x2", 20);
   unlinkn(d2, "x4", 20);
@@ -463,10 +468,10 @@ main(int argc, char *argv[])
     exit(1);
   }
   if(pid == 0){
-    createn(d1, "zz", 20);
+    createn(d1, "zz", 20, true);
     exit(0);
   }
-  createn(d1, "zz", 20);
+  createn(d1, "zz", 20, true);
   sleep(2);
   dircheck(d1, 20);
   reap(pid);

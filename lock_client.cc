@@ -10,13 +10,24 @@
 
 lock_client::lock_client(std::string dst)
 {
+
   sockaddr_in dstsock;
   make_sockaddr(dst.c_str(), &dstsock);
   cl = new rpcc(dstsock);
   if (cl->bind() < 0) {
     printf("lock_client: call bind\n");
   }
+  pthread_mutex_init(&mutex_, NULL);
+  pthread_cond_init (&condVar_, NULL);
 }
+
+
+lock_client::~lock_client() 
+{
+  pthread_mutex_destroy(&mutex_);
+  pthread_cond_destroy(&condVar_);
+}
+
 
 int
 lock_client::stat(lock_protocol::lockid_t lid)
@@ -30,10 +41,18 @@ lock_client::stat(lock_protocol::lockid_t lid)
 lock_protocol::status
 lock_client::acquire(lock_protocol::lockid_t lid)
 {
+  int r;
+  int ret = cl->call(lock_protocol::acquire, cl->id(), lid, r);
+  assert ( ret == lock_protocol::OK);
+  return r;
 }
 
 lock_protocol::status
 lock_client::release(lock_protocol::lockid_t lid)
 {
+  int r;
+  int ret = cl->call(lock_protocol::release, cl->id(), lid, r);
+  assert (ret == lock_protocol::OK); 
+  return r;
 }
 

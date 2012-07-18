@@ -1,7 +1,7 @@
 // yfs client.  implements FS operations using extent and lock server
 #include "yfs_client.h"
 #include "extent_client.h"
-#include "lock_client.h"
+#include "lock_client_cache.h"
 #include <sstream>
 #include <iostream>
 #include <stdio.h>
@@ -11,10 +11,13 @@
 #include <fcntl.h>
 
 
-yfs_client::yfs_client(std::string extent_dst, std::string lock_dst)
-{
-  ec = new extent_client(extent_dst);
+yfs_client::yfs_client(std::string extent_dst, std::string lock_dst) 
+{                                         
+  ec = new extent_client(extent_dst);                                
 
+//   lc = new lock_client(lock_dst);
+
+  lc = new lock_client_cache(lock_dst);
 }
 
 yfs_client::inum
@@ -92,5 +95,75 @@ yfs_client::getdir(inum inum, dirinfo &din)
   return r;
 }
 
+int 
+yfs_client::put(inum inum, std::string content)
+{
+  int r = OK;
+
+  printf("put %016llx\n", inum);
+  extent_protocol::attr a;
+
+  if (ec->put(inum, content) != extent_protocol::OK) {
+    r = IOERR;
+  } 
+  return r;  
+}
+
+int 
+yfs_client::get_fileDir_content(inum inum, std::string& fd) 
+{
+  int r = OK;
+  printf("get file or dir content  %016llx\n", inum);
+
+  extent_protocol::attr a;
+  if(ec->get(inum, fd) != extent_protocol::OK) {
+    r = IOERR;
+  }
+  return r;
+}
+
+//Lab 4
+
+int
+yfs_client::remove(inum inum) 
+{
+  int r = OK;
+  printf("remove1  %016llx\n", inum);
+  if(ec->remove(inum) != extent_protocol::OK) {
+    r = IOERR;
+  } 
+  return r;
+}
 
 
+
+int
+yfs_client::acquire(inum inum)
+{
+  int r = OK;
+  printf("acquire  %016llx\n", inum);
+  lock_protocol::lockid_t lid = inum;
+  if(lc->acquire(lid) != lock_protocol::OK) {
+    r = IOERR;
+  }
+  return r;
+}
+
+int
+yfs_client::release(inum inum)
+{
+  int r = OK;
+  printf("Remove1  %016llx\n", inum);
+  lock_protocol::lockid_t lid = inum;
+  if(lc->release(lid) != lock_protocol::OK) {
+    r = IOERR;
+  }
+  return r;
+}
+
+
+
+
+
+
+//Lab 4

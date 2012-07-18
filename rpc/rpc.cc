@@ -610,32 +610,90 @@ void
 rpcs::add_reply(unsigned int clt_nonce, unsigned int xid,
 		char *b, int sz)
 {
+
 	ScopedLock rwl(&reply_window_m_);
+
+	std::map<unsigned int,std::list<reply_t> >::iterator clt;
+        std::list<reply_t>::iterator it;
+
+        clt = reply_window_.find(clt_nonce);
+        for(it = clt->second.begin(); it!= clt->second.end(); it++) {
+           if( (*it).xid == xid ) { //Update the reply values   
+                (*it).buf = b;
+                (*it).sz = sz;
+                (*it).cb_present = true;
+//                break;
+	  }
+	}
 }
 
 void
 rpcs::free_reply_window(void)
 {
-	std::map<unsigned int,std::list<reply_t> >::iterator clt;
-	std::list<reply_t>::iterator it;
+  std::map<unsigned int,std::list<reply_t> >::iterator clt;
+  std::list<reply_t>::iterator it;
 
-	ScopedLock rwl(&reply_window_m_);
-	for (clt = reply_window_.begin(); clt != reply_window_.end(); clt++) {
-		for (it = clt->second.begin(); it != clt->second.end(); it++) {
-			free((*it).buf);
-		}
-		clt->second.clear();
-	}
-	reply_window_.clear();
+  ScopedLock rwl(&reply_window_m_);
+  for (clt = reply_window_.begin(); clt != reply_window_.end(); clt++) {
+    for (it = clt->second.begin(); it != clt->second.end(); it++) {
+      free((*it).buf);
+    }		
+   clt->second.clear();
+ }
+   reply_window_.clear();
 }
 
 rpcs::rpcstate_t 
 rpcs::checkduplicate_and_update(unsigned int clt_nonce, unsigned int xid,
 		unsigned int xid_rep, char **b, int *sz)
 {
-	ScopedLock rwl(&reply_window_m_);
 
-	return NEW;
+        ScopedLock rwl(&reply_window_m_);
+
+	std::map<unsigned int,std::list<reply_t> >::iterator clt;
+        std::list<reply_t>::iterator it;
+
+        //Find the Client                       
+        clt = reply_window_.find(clt_nonce);
+
+
+        //Remove Ids which the client has already seen                          
+        it = clt->second.begin();
+
+        while (  ( it!=clt->second.end()) && (xid_rep >= (*it).xid  )   ) {                                                        it = clt->second.erase(it);
+        }
+        // Invariant : First one should be one which hasn't been Acknowleged                                                                    
+         for(it = clt->second.begin(); it!= clt->second.end(); it++) {
+           if ( (*it).xid == xid ) {
+                if ( (*it).cb_present) {
+                        *b =  (*it).buf;
+                        *sz = (*it).sz;
+                        return DONE;
+                 } else 
+                  return INPROGRESS;
+            }
+        }
+
+        it = clt->second.begin();
+        // If What you are requesting is less than front of window then it is cleared
+        if ( it!= clt->second.end() && xid < (*it).xid && xid < xid_rep) {
+          return FORGOTTEN;
+        }
+
+        it = clt->second.begin();
+
+        struct reply_t newReply(xid);
+        newReply.cb_present = false;
+        while( it!= clt->second.end() && (*it).xid < xid) //Find the first smallles element. Insert after that
+          it++;
+
+	if( it == clt->second.end())
+	  clt->second.push_back(newReply);
+	else
+          clt->second.insert(it, newReply);
+        //Invariant : Id's have to be in order so that Ack can help u release ID's 
+        return NEW;
+
 }
 
 //rpc handler
@@ -886,7 +944,7 @@ make_sockaddr(const char *hostandport, struct sockaddr_in *dst){
 	if(port == NULL){
 		memcpy(host, localhost, strlen(localhost)+1);
 		port = hostandport;
-	}else{
+	}else{ 
 		memcpy(host, hostandport, port-hostandport);
 		host[port-hostandport] = '\0';
 		port++;
@@ -894,7 +952,7 @@ make_sockaddr(const char *hostandport, struct sockaddr_in *dst){
 
 	make_sockaddr(host, port, dst);
 
-}
+}       
 
 void
 make_sockaddr(const char *host, const char *port, struct sockaddr_in *dst){
