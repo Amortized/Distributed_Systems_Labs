@@ -109,4 +109,4 @@ extent_smain.o: extent_smain.cc rpc/rpc.h \
  /usr/include/libio.h /usr/include/_G_config.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h extent_server.h \
- extent_protocol.h
+ extent_protocol.h lock_protocol.h

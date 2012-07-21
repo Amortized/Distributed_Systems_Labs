@@ -1,4 +1,5 @@
 // yfs client.  implements FS operations using extent and lock server
+
 #include "yfs_client.h"
 #include "extent_client.h"
 #include "lock_client_cache.h"
@@ -10,14 +11,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 yfs_client::yfs_client(std::string extent_dst, std::string lock_dst) 
-{                                         
-  ec = new extent_client(extent_dst);                                
-
-//   lc = new lock_client(lock_dst);
-
-  lc = new lock_client_cache(lock_dst);
+{				                                         
+  ec = new extent_client(extent_dst);                           							
+//   lc = new lock_client(lock_dst);		
+  lc = new lock_client_cache(lock_dst, this);
 }
 
 yfs_client::inum
@@ -161,9 +159,14 @@ yfs_client::release(inum inum)
   return r;
 }
 
-
-
-
-
-
 //Lab 4
+
+//Lab 6
+void
+yfs_client::dorelease(lock_protocol::lockid_t lid) {
+  inum lockid = lid;
+  printf("Calling Flush");
+  ec->flush(lockid);     
+}
+
+// Lab 6

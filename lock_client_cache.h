@@ -17,7 +17,7 @@ class lock_release_user {
  public:
   virtual void dorelease(lock_protocol::lockid_t) = 0;
   virtual ~lock_release_user() {};
-};
+};	
 
 
 // SUGGESTED LOCK CACHING IMPLEMENTATION PLAN:

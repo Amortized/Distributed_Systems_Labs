@@ -65,7 +65,7 @@ class yfs_client : public lock_release_user {
   //Lab 4
 
 
-  void dorelease(lock_protocol::lockid_t) { }
+  void dorelease(lock_protocol::lockid_t);
   
 };
 

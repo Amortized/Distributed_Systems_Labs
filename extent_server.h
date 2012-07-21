@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include "extent_protocol.h"
+#include "lock_protocol.h"
 
 using namespace std;
 
@@ -18,7 +19,6 @@ class extent_server {
   int get(extent_protocol::extentid_t id, std::string &);
   int getattr(extent_protocol::extentid_t id, extent_protocol::attr &);
   int remove(extent_protocol::extentid_t id, int &);
-
  private:
   
   //Lab 2//
@@ -31,6 +31,9 @@ class extent_server {
   //Lab 2//
 
 
+  // <lab6>
+  Mutex fileMutex;
+  
 };
 
 #endif 

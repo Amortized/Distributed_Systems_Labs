@@ -9,10 +9,10 @@
 #include <set>
 
 static void *
-releasethread(void *x)
-{                            
-  lock_client_cache *cc = (lock_client_cache *) x;
-  cc->releaser();
+releasethread(void *x)					
+{							                        	    
+  lock_client_cache *cc = (lock_client_cache *) x;		
+  cc->releaser();		
   return 0;
 }              
 
@@ -42,9 +42,7 @@ lock_client_cache::lock_client_cache(std::string xdst,
   assert (r == 0);
 
   int ret = cl->call(lock_protocol::subscribe, cl->id(), rlock_port,r);
-  assert (ret == lock_protocol::OK);
-  
-
+  assert (ret == lock_protocol::OK);  
 }
 
 
@@ -108,6 +106,10 @@ lock_client_cache::releaser()
     if(lc->seq_num == it->second /*Will send release only for which client is supposed to send it */  && lc->lstatus == RELEASING /*Now this can be called if all threads have got the lock and some of them get the lock */) {       
 
  m.unlock(); //Release the lock. DON'T HOLD THE LOCK ACROSS RPC'S 
+
+
+
+     //Just before releasing the lock call dorelease so that dirty extents are flushed.	
       if (lu != NULL)  //If there is realease call the function
         {
           lu->dorelease(it->first);
@@ -491,7 +493,11 @@ lock_client_cache::retry(lock_protocol::lockid_t lid, int &)
   rtr_cv.signal();  //Indirectly wake up the thread doing the acquire
   m.unlock();
   return lock_protocol::OK; 
-}
+}  
+
+
+  
+
 
 
 

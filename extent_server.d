@@ -106,7 +106,7 @@ extent_server.o: extent_server.cc extent_server.h \
  /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
  /usr/include/string.h rpc/connection.h /usr/include/arpa/inet.h \
- rpc/pollmgr.h /usr/include/i386-linux-gnu/sys/epoll.h \
+ rpc/pollmgr.h /usr/include/i386-linux-gnu/sys/epoll.h lock_protocol.h \
  /usr/include/libio.h /usr/include/_G_config.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
