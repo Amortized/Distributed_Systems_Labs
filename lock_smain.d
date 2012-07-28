@@ -111,4 +111,5 @@ lock_smain.o: lock_smain.cc rpc/rpc.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h lock_server_cache.h \
  lock_protocol.h lock_server.h lock_client.h /usr/include/c++/4.6/set \
  /usr/include/c++/4.6/bits/stl_set.h \
- /usr/include/c++/4.6/bits/stl_multiset.h rpc/jsl_log.h
+ /usr/include/c++/4.6/bits/stl_multiset.h paxos.h paxos_protocol.h log.h \
+ rsm.h rsm_protocol.h rsm_state_transfer.h config.h rpc/jsl_log.h

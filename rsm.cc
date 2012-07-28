@@ -14,7 +14,7 @@
 // primary will be a node from the previous view.  The configuration
 // module constructs the sequence of views for the RSM and the RSM
 // ensures there will be always one primary, who was a member of the
-// last view.
+// last view.			
 //
 // When a new node starts, the recovery thread is in charge of joining
 // the RSM.  It will collect the internal RSM state from the primary;
@@ -230,7 +230,21 @@ rsm::commit_change()
   // Lab 7:
   // - If I am not part of the new view, start recovery
   // - Notify any joiners if they were successful
+
+  set_primary(); //First Set the Primary
+    if (cfg->myaddr() == primary)
+  {
+    insync = cfg->get_curview().size() - 1;
+        last_myvs.vid = cfg->vid();
+    myvs.vid = last_myvs.vid;
+  }
+    pthread_cond_signal(&recovery_cond);
   pthread_mutex_unlock(&rsm_mutex);
+    if (cfg->ismember(cfg->myaddr()))
+  {
+    breakpoint2();
+  }
+
 }
 
 
@@ -306,6 +320,13 @@ rsm::joinreq(std::string m, viewstamp last, rsm_protocol::joinres &r)
     ret = rsm_protocol::BUSY;
   } else {
     // Lab 7: invoke config to create a new view that contains m
+
+    if(cfg->add(m)) { //If it was added to the config module for a view change
+      r.log = cfg->dump(); //Dump this acceptor 		
+    } else {
+      ret = rsm_protocol::ERR;
+    }
+
   }
   assert (pthread_mutex_unlock(&rsm_mutex) == 0);
   return ret;
