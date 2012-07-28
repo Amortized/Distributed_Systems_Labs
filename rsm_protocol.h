@@ -6,7 +6,7 @@
 
 class rsm_client_protocol {
  public:
-  enum xxstatus { OK, ERR, NOTPRIMARY, BUSY};
+  enum xxstatus { OK, ERR, NOTPRIMARY, BUSY, DELAY };
   typedef int status;
   enum rpc_numbers {
     invoke = 0x9001,
